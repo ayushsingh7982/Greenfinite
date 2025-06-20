@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import CustomCursor from './components/ui/Cursor'
+import Footer from './components/ui/Footer'
+
 function App() {
   return (
 
@@ -12,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
+      <Footer />
     </div>
   )
 }
