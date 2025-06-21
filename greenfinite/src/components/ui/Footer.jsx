@@ -57,9 +57,9 @@ const App = () => {
 
                                 <div className='aspect-[16/9]'>
                                     <img
-                                        src='logo.png'
+                                        src='FindAura..png'
                                         alt="greenfinite Logo Placeholder"
-                                        className="w-24 h-24 md:w-48 md:h-48 lg:w-80 lg:h-50 rounded-md hidden md:block mt-14"
+                                        className="w-24 h-24 md:w-48 md:h-48 lg:w-50 lg:h-50 rounded-md hidden md:block mt-14"
                                     />
                                 </div>
 
@@ -151,15 +151,23 @@ const App = () => {
 
 
                         {/* Social Icons and Linkedin */}
-                        
+                        <div className="flex items-center space-x-3">
+
+                            <a href="https://www.instagram.com/greenfinite_?utm_source=ig_web_button_share_sheet&igsh=dWR5bXJ0MmxkeXl0" className="text-gray-500 transform scale-100 hover:scale-90 transition duration-300">
+                                <Instagram size={20} />
+                            </a>
+
+                            <a href="https://www.linkedin.com/company/greenfinite/" className="text-gray-500 transform scale-100 hover:scale-90 transition duration-300">
+                                <Linkedin size={20} />
+                            </a>
+                        </div>
                     </div>
 
                     {/* Copyright text for larger screens, hidden on small screens */}
                     
-                    <p className="text-gray-500 text-sm text-center mt-6 ">
-                    &copy; 2025 Greenfinite. All rights reserved.
+                    <p className="text-gray-500 text-sm text-center mt-1 ">
+                        B190, Sector 31, Noida -301301
                     </p>
-                    
 
 
                 </div>

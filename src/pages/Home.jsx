@@ -1,5 +1,5 @@
 import Navbar from "../components/ui/Navbar";
-
+import Footer from "../components/ui/Footer";
 export default function Home() {
   return (
     <div
@@ -8,9 +8,9 @@ export default function Home() {
     >
       <div className="w-screen">
         <Navbar />
-        <img src="asset2.png" alt="Logo1" className="w-1/3 mx-auto" />
-        <h1 className="font-brand text-4xl text-black">Is Tailwind Config Working?</h1>
-
+        {/* <img src="logo.png" alt="Logo1" className="w-1/3 mx-auto" /> */}
+        
+        <Footer />
       </div>
 
     </div>
