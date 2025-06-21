@@ -59,7 +59,7 @@ const App = () => {
                                     <img
                                         src='logo.png'
                                         alt="greenfinite Logo Placeholder"
-                                        className="w-24 h-24 md:w-48 md:h-48 lg:w-80 lg:h-50 rounded-md hidden md:block mt-14"
+                                        className="w-24 h-24 md:w-48 md:h-48 lg:w-80 lg:h-45 rounded-md hidden md:block mt-14"
                                     />
                                 </div>
 
