@@ -9,10 +9,10 @@ export default function Home() {
       style={{ backgroundImage: "url('bg.jpg')", backgroundSize: "cover" }}
     >
       <div className="w-screen">
-        <div className="min-h-[30vh] flex flex-col">
+        <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-1 flex justify-center items-center">
-            <UploadPage /> {/* Add your upload component here */}
+            <UploadPage />
           </main>
           <Footer />
         </div>
