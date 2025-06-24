@@ -1,8 +1,13 @@
+// components/upload/Dropdown.jsx
 import React from 'react';
 
-const Dropdown = () => {
+const Dropdown = ({ selectedType, setSelectedType }) => {
   return (
-    <select className="w-full px-4 py-2 border rounded">
+    <select
+      value={selectedType}
+      onChange={(e) => setSelectedType(e.target.value)}
+      className="w-full px-4 py-2 border rounded"
+    >
       <option value="">Select File Type</option>
       <option value="pdf">PDF</option>
       <option value="docx">DOCX</option>
