@@ -1,170 +1,247 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { HomeIcon, GearIcon, InfoCircledIcon, EnvelopeClosedIcon, HamburgerMenuIcon, Cross1Icon } from '@radix-ui/react-icons';
 
+// MobileMenuOverlay Component
+const MobileMenuOverlay = ({ isOpen, onClose, activeTab, setActiveTab }) => {
+    // Prevent scrolling on the body when the menu is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = ''; // Clean up on unmount
+        };
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    // Helper function to get the Radix UI icon component for each tab
+    const getTabIconComponent = (tabName) => {
+        switch (tabName) {
+            case 'home':
+                return HomeIcon;
+            case 'services':
+                return GearIcon;
+            case 'about':
+                return InfoCircledIcon;
+            case 'contact':
+                return EnvelopeClosedIcon;
+            default:
+                return null;
+        }
+    };
+
+    const handleLinkClick = (tabName) => {
+        setActiveTab(tabName); // Update the active tab in the App component
+        onClose(); // Close menu after clicking a link
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-filter backdrop-blur-lg z-40 flex flex-col items-center justify-center p-8">
+            <button
+                onClick={onClose}
+                className="absolute top-6 right-6 text-white text-3xl focus:outline-none z-50"
+                aria-label="Close menu"
+            >
+                <Cross1Icon className="w-8 h-8" />
+            </button>
+            <nav className="flex flex-col space-y-8 text-center">
+                {['home', 'services', 'about', 'contact'].map((tabName) => {
+                    const IconComponent = getTabIconComponent(tabName);
+                    // Determine link styling based on the activeTab prop
+                    const linkClasses = `text-3xl font-light font-sans flex items-center justify-center space-x-4 transition-colors duration-200 ${
+                        activeTab === tabName ? 'text-white' : 'text-gray-300 hover:text-green-400' // Changed to green-400 for hover
+                    }`;
+                    return (
+                        <a
+                            key={tabName}
+                            href={`#${tabName}`}
+                            onClick={() => handleLinkClick(tabName)}
+                            className={linkClasses}
+                        >
+                            {IconComponent && <IconComponent className="w-8 h-8" />}
+                            <span>{tabName.charAt(0).toUpperCase() + tabName.slice(1)}</span>
+                        </a>
+                    );
+                })}
+            </nav>
+        </div>
+    );
+};
+
+
+// TopNavigationBar Component - Styled with a modern glassmorphism aesthetic and custom spacing
+const TopNavigationBar = ({ toggleMenu, activeTab, setActiveTab }) => { // Receive activeTab and setActiveTab
+    // Function to handle tab clicks and set the active tab
+    const handleTabClick = (tabName) => {
+        setActiveTab(tabName); // Update the active tab in the App component
+    };
+
+    // Helper function to determine link styling based on active state and add hover transform
+    const getLinkClass = (tabName) => {
+        // Updated hover effect for a more ethereal, futuristic feel (scale and color change)
+        const baseClasses = 'relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-green-300 after:transition-all after:duration-300 ' + // Changed to green-300 for underline
+                               'transform hover:scale-105 transition-transform duration-300 ease-in-out';
+
+        if (activeTab === tabName) {
+            return `text-white ${baseClasses}`;
+        } else {
+            return `text-white hover:text-green-400 ${baseClasses}`; // Changed hover color to green-400
+        }
+    };
+
+    // Helper function to get the Radix UI icon component for each tab
+    const getTabIconComponent = (tabName) => {
+        switch (tabName) {
+            case 'home':
+                return HomeIcon;
+            case 'services':
+                return GearIcon;
+            case 'about':
+                return InfoCircledIcon;
+            case 'contact':
+                return EnvelopeClosedIcon;
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <nav
+            className="fixed top-6 inset-x-4 md:inset-x-8 lg:inset-x-16 xl:inset-x-24 /* Updated responsive horizontal spacing */
+                       py-3 px-4 sm:px-8 lg:px-10 /* Internal padding for content */
+                       flex justify-between items-center /* Distribute items */
+                       bg-black bg-opacity-30 backdrop-filter backdrop-blur-3xl /* Enhanced glassmorphism */
+                       border-b border-t border-l border-r rounded-3xl border-gray-500 border-opacity-50 shadow-2xl z-50 /* Grey glowing border & stronger shadow */
+                       transition-transform duration-300 ease-out"
+        >
+            {/* Endorphind Company Name (Logo area) - Updated for professional, futuristic look */}
+            <div className="flex items-center text-2xl sm:text-3xl font-bold font-mono tracking-normal text-white drop-shadow-md
+                            hover:text-green-400 transition-colors duration-500"> {/* Dynamic color on hover - Changed to green-400 */}
+                Greenfinite
+                {/* AI Mode Indicator removed */}
+            </div>
+
+            {/* Hamburger Menu Icon (visible on small screens, hidden on md and up) */}
+            <button
+                onClick={toggleMenu}
+                className="md:hidden text-white focus:outline-none p-2"
+                aria-label="Open menu"
+                tabIndex="0" // Make it focusable
+                role="button" // Indicate it's an interactive element
+            >
+                <HamburgerMenuIcon className="w-8 h-8" />
+            </button>
+
+            {/* Navigation Links (hidden on small screens, visible on md and up) */}
+            <div className="hidden md:flex items-center space-x-6 sm:space-x-8 lg:space-x-8"> {/* Responsive spacing between links */}
+                {/* Home Link */}
+                <a
+                    href="#home"
+                    onClick={() => handleTabClick('home')}
+                    className={`focus:outline-none flex items-center group ${getLinkClass('home')}`}
+                >
+                    <span className="text-base sm:text-lg font-normal font-mono">Home</span>
+                    {React.createElement(getTabIconComponent('home'), {
+                        className: "ml-2 transition-opacity duration-300 w-5 h-5 group-hover:text-green-400" // Icons are always visible, changed to green-400
+                    })}
+                </a>
+
+                {/* About Link */}
+                <a
+                    href="#about"
+                    onClick={() => handleTabClick('about')}
+                    className={`focus:outline-none flex items-center group ${getLinkClass('about')}`}
+                >
+                    <span className="text-base sm:text-lg font-normal font-mono">About</span>
+                    {React.createElement(getTabIconComponent('about'), {
+                        className: "ml-2 transition-opacity duration-300 w-5 h-5 group-hover:text-green-400" // Changed to green-400
+                    })}
+                </a>
+
+                {/* Services Link */}
+                <a
+                    href="#services"
+                    onClick={() => handleTabClick('services')}
+                    className={`focus:outline-none flex items-center group ${getLinkClass('services')}`}
+                >
+                    <span className="text-base sm:text-lg font-normal font-mono">Services</span>
+                    {React.createElement(getTabIconComponent('services'), {
+                        className: "ml-2 transition-opacity duration-300 w-5 h-5 group-hover:text-green-400" // Changed to green-400
+                    })}
+                </a>
+
+                {/* Contact Link */}
+                <a
+                    href="#contact"
+                    onClick={() => handleTabClick('contact')}
+                    className={`focus:outline-none flex items-center group ${getLinkClass('contact')}`}
+                >
+                    <span className="text-base sm:text-lg font-normal font-mono">Contact</span>
+                    {React.createElement(getTabIconComponent('contact'), {
+                        className: "ml-2 transition-opacity duration-300 w-5 h-5 group-hover:text-green-400" // Changed to green-400
+                    })}
+                </a>
+            </div>
+        </nav>
+    );
+};
+
+// Main App component
 const App = () => {
-    // Navbar states
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const menuButtonRef = useRef(null);
-    const mobileMenuRef = useRef(null);
+    const [activeTab, setActiveTab] = useState('home'); // Active tab state lifted to App
 
-    // Navbar functions
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    // Global click listener for closing mobile menu when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                mobileMenuRef.current &&
-                !mobileMenuRef.current.contains(event.target) &&
-                menuButtonRef.current &&
-                !menuButtonRef.current.contains(event.target) &&
-                window.innerWidth < 768 &&
-                isMenuOpen
-            ) {
-                setIsMenuOpen(false);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [isMenuOpen]);
-
-    // Handle window resize to close mobile menu on desktop
+    // Ensure menu closes on resize if screen becomes desktop size
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth >= 768) {
+            if (window.innerWidth >= 768) { // Tailwind's 'md' breakpoint
                 setIsMenuOpen(false);
             }
         };
 
         window.addEventListener('resize', handleResize);
+
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
     return (
-        <div className="font-['Inter'] text-gray-900 relative overflow-x-hidden"
-             style={{
-                 // Minimal styling for the background to showcase the navbar
-                 backgroundImage: `url('https://images.unsplash.com/photo-1603575997232-a72e12e3e5c9?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
-                 backgroundSize: 'cover',
-                 backgroundPosition: 'center',
-                 minHeight: '100vh', // Ensure background covers the viewport
-             }}>
-            {/* Main Navbar */}
-            <nav className="fixed top-[2em] left-[5em] right-[5em] w-auto py-3 px-7 md:px-12
-                            bg-transparent backdrop-blur-lg border border-gray-400 border-opacity-50 shadow-sm
-                            flex items-center justify-between z-40
-                            transition-all duration-300 ease-in-out
-                            hover:border-opacity-100 hover:shadow-xl
-                            rounded-2xl"> {/* Added rounded-2xl here */}
-                {/* Logo */}
-                <div className="text-xl md:text-3xl font-semibold text-white transition-colors duration-300 hover:text-gray-300">Greenfinite</div>
+        <div className="font-sans text-gray-900 min-h-screen relative overflow-hidden"
+            style={{
+                backgroundImage: `url('https://images.unsplash.com/photo-1542296332-2a4470b8f2d0?auto=format&fit=crop&q=80&w=1920&h=1080&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+                minHeight: '15vh'
+            }}>
 
-                {/* Desktop Navigation Links */}
-                <div className="hidden md:flex md:flex-row md:items-center md:space-x-4 text-base"> {/* Adjusted space-x */}
-                    {/* Applied holographic-link class and adjusted padding */}
-                    <a href="#" className="holographic-link flex items-center justify-center px-4 py-2 text-base font-medium">Home</a>
-                    <a href="#" className="holographic-link flex items-center justify-center px-4 py-2 text-base font-medium">About</a>
-                    <a href="#" className="holographic-link flex items-center justify-center px-4 py-2 text-base font-medium">Contact Us</a>
-                    <a href="#" className="holographic-link flex items-center justify-center px-4 py-2 text-base font-medium">FAQs</a>
-                </div>
+            {/* Pass activeTab and setActiveTab to TopNavigationBar */}
+            <TopNavigationBar toggleMenu={toggleMenu} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-                {/* Mobile Menu Button (Hamburger) */}
-                <button
-                    ref={menuButtonRef}
-                    onClick={toggleMenu}
-                    className="md:hidden focus:outline-none text-white"
-                    aria-label="Open navigation menu"
-                >
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </nav>
+            {/* Mobile Menu Overlay */}
+            <MobileMenuOverlay
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                activeTab={activeTab} // Pass activeTab to overlay
+                setActiveTab={setActiveTab} // Pass setActiveTab to overlay
+            />
 
-            {/* Mobile Menu Overlay (Slides from right, Apple style) */}
-            <div
-                ref={mobileMenuRef}
-                className={`
-                    fixed top-0 right-0 h-screen w-3/4 max-w-xs
-                    bg-gray-900 bg-opacity-70 backdrop-blur-lg border-l border-gray-400 border-opacity-50 /* Changed to match desktop navbar theme */
-                    p-6 flex flex-col space-y-6
-                    transform transition-transform duration-300 ease-in-out z-50
-                    ${isMenuOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'}
-                    md:hidden overflow-y-auto
-                `}
-            >
-                {/* Close Button */}
-                <button
-                    onClick={toggleMenu}
-                    className="text-white self-end focus:outline-none mb-4" /* Changed text color to white */
-                    aria-label="Close navigation menu"
-                >
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-
-                {/* Logo in Overlay - Hidden from sidebar */}
-                {/* <div className="text-xl md:text-2xl font-semibold text-white mb-6">greenfinite</div> */} {/* This line is commented out */}
-
-                {/* Navigation Links for Mobile */}
-                <a href="#" className="block px-3 py-2 text-xl text-white hover:bg-white hover:bg-opacity-20 rounded transition duration-300">Home</a>
-                <a href="#" className="block px-3 py-2 text-xl text-white hover:bg-white hover:bg-opacity-20 rounded transition duration-300">About</a>
-                <a href="#" className="block px-3 py-2 text-xl text-white hover:bg-white hover:bg-opacity-20 rounded transition duration-300">Contact</a>
+            {/* Main Content Area - Adjust pt to accommodate fixed top navbar height and its top spacing */}
+            <div className="flex-grow flex items-center justify-center pt-[calc(2em+4rem)]
+                                md:pt-[calc(2em+4rem)] /* Desktop padding */
+                                sm:pt-[calc(1em+4rem)] /* Smaller padding for medium screens */
+                                pt-[calc(0.5em+4rem)] /* Default smallest padding for extra small screens */
+                                ">
+                {/* Content can be added here later */}
             </div>
-
-            {/* Custom CSS for holographic effect */}
-            <style>{`
-                .holographic-link {
-                    position: relative;
-                    overflow: hidden;
-                    border-radius: 0.75rem; /* rounded-lg */
-                    background-color: transparent; /* Initially transparent background */
-                    border: 1px solid transparent; /* Initially transparent border */
-                    box-shadow: 0 0 0px rgba(0,0,0,0); /* Initial shadow */
-                    color: #fff; /* Default text color */
-                    transition: all 0.5s ease; /* Smooth transition for all properties */
-                    text-decoration: none; /* Remove underline */
-                }
-
-                .holographic-link::before {
-                    content: '';
-                    position: absolute;
-                    top: -50%;
-                    left: -50%;
-                    width: 200%;
-                    height: 200%;
-                    background: linear-gradient(
-                        0deg,
-                        transparent,
-                        transparent 30%,
-                        rgba(0, 255, 255, 0.3) /* Cyan glow */
-                    );
-                    transform: rotate(-45deg) translateY(0%);
-                    transition: transform 0.5s ease, opacity 0.5s ease;
-                    opacity: 0;
-                    z-index: 1; /* Below the text */
-                }
-
-                .holographic-link:hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Cyan glow shadow */
-                    border-color: rgba(0, 255, 255, 0.7); /* Border color change on hover */
-                    background-color: rgba(17, 17, 17, 0.8); /* Dark background appears on hover */
-                    color: #4dd0e1; /* Text color change to complement cyan glow */
-                }
-
-                .holographic-link:hover::before {
-                    opacity: 1;
-                    transform: rotate(-45deg) translateY(100%); /* Slides up */
-                }
-            `}</style>
         </div>
     );
 };

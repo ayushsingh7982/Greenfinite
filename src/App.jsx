@@ -1,8 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import CustomCursor from './components/ui/Cursor'
-import Footer from './components/ui/Footer'
-
+import UploadPage from './pages/UploadPage'
 function App() {
   return (
 
@@ -12,9 +11,10 @@ function App() {
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/upload" element={<UploadPage />} /> 
         </Routes>
       </div>
-      {/* <Footer /> */}
+      
     </div>
   )
 }
