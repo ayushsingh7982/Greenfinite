@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import CustomCursor from './components/ui/Cursor'
+import Analyze from './pages/Analyze'
 function App() {
   return (
 
@@ -10,6 +11,7 @@ function App() {
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/analyze" element={<Analyze />} />
         </Routes>
       </div>
       

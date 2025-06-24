@@ -236,7 +236,7 @@ const App = () => {
 
             {/* Main Content Area - Adjust pt to accommodate fixed top navbar height and its top spacing */}
             <div className="flex-grow flex items-center justify-center pt-[calc(2em+4rem)]
-                                md:pt-[calc(2em+2rem)] /* Desktop padding */
+                                md:pt-[calc(2em+4rem)] /* Desktop padding */
                                 sm:pt-[calc(1em+4rem)] /* Smaller padding for medium screens */
                                 pt-[calc(0.5em+4rem)] /* Default smallest padding for extra small screens */
                                 ">
