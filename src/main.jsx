@@ -4,6 +4,17 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 
+// ✅ Vite-specific env usage
+document.documentElement.style.setProperty(
+  '--font-primary',
+  import.meta.env.VITE_FONT_PRIMARY || "'Inter', sans-serif"
+);
+
+document.documentElement.style.setProperty(
+  '--font-secondary',
+  import.meta.env.VITE_FONT_SECONDARY || "'Georgia', serif"
+);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>

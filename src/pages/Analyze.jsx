@@ -15,7 +15,7 @@ export default function Analyze() {
       <div className="w-screen">
         <div className="min-h-[30vh] flex flex-col">
           <Navbar />
-          <main className="flex-1 flex flex-col md:flex-row justify-center items-center min-h-[84.2vh] p-4 space-y-4 md:space-y-0 md:space-x-4 max-w-6xl mx-auto">
+          <main className="w-full min-h-screen flex flex-col md:flex-row items-start justify-center gap-6 px-4 md:px-8 py-10">
             <ChatBot />
             <DocPreview />
           </main>

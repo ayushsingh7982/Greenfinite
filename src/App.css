@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+:root {
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font-primary);
+}
+
+h1 {
+  font-family: var(--font-secondary);
+}
+
